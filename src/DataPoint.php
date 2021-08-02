@@ -7,14 +7,27 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class DataPoint implements Arrayable
 {
+    public Carbon $start;
+    public Carbon $end;
+    public int $value;
+    public int $increments;
+    public int $decrements;
+    public int $difference;
+
     public function __construct(
-        public Carbon $start,
-        public Carbon $end,
-        public int $value,
-        public int $increments,
-        public int $decrements,
-        public int $difference,
+        Carbon $start,
+        Carbon $end,
+        int $value,
+        int $increments,
+        int $decrements,
+        int $difference,
     ) {
+        $this->difference = $difference;
+        $this->decrements = $decrements;
+        $this->increments = $increments;
+        $this->value = $value;
+        $this->end = $end;
+        $this->start = $start;
     }
 
     public function toArray(): array

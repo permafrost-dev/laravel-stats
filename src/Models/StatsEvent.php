@@ -25,14 +25,16 @@ class StatsEvent extends Model
 
     public static function getPeriodDateFormat(string $period): string
     {
-        return match($period) {
+        $map = [
             'year' => "date_format(created_at,'%Y')",
             'month' => "date_format(created_at,'%Y-%m')",
             'week' => "yearweek(created_at, 3)", // see https://stackoverflow.com/questions/15562270/php-datew-vs-mysql-yearweeknow
             'day' => "date_format(created_at,'%Y-%m-%d')",
             'hour' => "date_format(created_at,'%Y-%m-%d %H')",
             'minute' => "date_format(created_at,'%Y-%m-%d %H:%i')",
-        };
+        ];
+
+        return $map[$period] ?? $map['day'];
     }
 
     public function scopeIncrements(Builder $query): void
