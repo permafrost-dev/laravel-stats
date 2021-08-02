@@ -1,5 +1,5 @@
 {
-    "name": "spatie/laravel-stats",
+    "name": "permafrost-dev/laravel-stats",
     "description": "Track application stat changes over time",
     "keywords": [
         "spatie",
@@ -22,7 +22,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^7.4|^8.0",
         "illuminate/contracts": "^8.0",
         "spatie/laravel-package-tools": "^1.6"
     },
