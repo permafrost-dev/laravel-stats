@@ -9,7 +9,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: [8.0]
+        php: [8.0, 7.4]
         laravel: [8.*]
         dependency-version: [prefer-lowest, prefer-stable]
         include:
@@ -38,6 +38,16 @@ jobs:
         run: |
           sudo /etc/init.d/mysql start
           mysql  -u root -proot -e 'CREATE DATABASE IF NOT EXISTS laravel_stats_test;'
+
+      - name: Get composer cache directory path
+        id: composer-cache-dir-path
+        run: echo "::set-output name=dir::$(composer config cache-files-dir --global)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache-dir-path.outputs.dir }}
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Install dependencies
         run: |
