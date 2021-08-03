@@ -133,6 +133,11 @@ class StatsQuery
                 ->where('created_at', '<', $periodEnd)
                 ->sum('value');
 
+            $count = $changes
+                ->where('created_at', '>=', $applyChangesAfter)
+                ->where('created_at', '<', $periodEnd)
+                ->count();
+
             $value = $startValue + $difference;
             $lastPeriodValue = $value;
 
@@ -140,6 +145,7 @@ class StatsQuery
                 $periodStart,
                 $periodEnd,
                 (int) $value,
+                (int) $count,
                 (int) ($differencesPerPeriod[$periodKey]['increments'] ?? 0),
                 (int) ($differencesPerPeriod[$periodKey]['decrements'] ?? 0),
                 (int) ($differencesPerPeriod[$periodKey]['difference'] ?? 0)
