@@ -17,35 +17,36 @@ abstract class BaseStats
         return new StatsQuery(static::class);
     }
 
-    public static function increase($number = 1, ?DateTimeInterface $timestamp = null)
+    public static function increase($number = 1, ?DateTimeInterface $timestamp = null, ?string $data = null)
     {
         $number = is_int($number) ? $number : 1;
 
         $stats = new static;
 
-        $stats->createEvent(StatsEvent::TYPE_CHANGE, $number, $timestamp);
+        $stats->createEvent(StatsEvent::TYPE_CHANGE, $number, $timestamp, $data);
     }
 
-    public static function decrease($number = 1, ?DateTimeInterface $timestamp = null)
+    public static function decrease($number = 1, ?DateTimeInterface $timestamp = null, ?string $data = null)
     {
         $number = is_int($number) ? $number : 1;
 
         $stats = new static;
 
-        $stats->createEvent(StatsEvent::TYPE_CHANGE, -$number, $timestamp);
+        $stats->createEvent(StatsEvent::TYPE_CHANGE, -$number, $timestamp, $data);
     }
 
-    public static function set(int $value, ?DateTimeInterface $timestamp = null)
+    public static function set(int $value, ?DateTimeInterface $timestamp = null, ?string $data = null)
     {
         $stats = new static;
 
-        $stats->createEvent(StatsEvent::TYPE_SET, $value, $timestamp);
+        $stats->createEvent(StatsEvent::TYPE_SET, $value, $timestamp, $data);
     }
 
-    protected function createEvent($type, $value, ?DateTimeInterface $timestamp = null): StatsEvent
+    protected function createEvent($type, $value, ?DateTimeInterface $timestamp = null, ?string $data = null): StatsEvent
     {
         return StatsEvent::create([
             'name' => $this->getName(),
+            'data' => $data,
             'type' => $type,
             'value' => $value,
             'created_at' => $timestamp ?? now(),

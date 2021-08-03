@@ -12,6 +12,7 @@ class CreateStatsTables extends Migration
             $table->id();
 
             $table->string('name');
+            $table->string('data')->nullable();
             $table->tinyInteger('type');
             $table->bigInteger('value');
 

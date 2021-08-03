@@ -46,6 +46,21 @@ class BaseStatsTest extends TestCase
     }
 
     /** @test */
+    public function it_can_create_events_for_increments_with_extra_data()
+    {
+        $stats = new OrderStats();
+
+        $stats->increase(1, null, 'test-data');
+
+        $this->assertDatabaseHas('stats_events', [
+            'name' => 'OrderStats',
+            'data' => 'test-data',
+            'value' => 1,
+            'type' => StatsEvent::TYPE_CHANGE,
+        ]);
+    }
+
+    /** @test */
     public function it_can_create_events_for_decrements()
     {
         $stats = new OrderStats();
@@ -75,6 +90,21 @@ class BaseStatsTest extends TestCase
     }
 
     /** @test */
+    public function it_can_create_events_for_decrements_with_extra_data()
+    {
+        $stats = new OrderStats();
+
+        $stats->decrease(1, null, 'test-data');
+
+        $this->assertDatabaseHas('stats_events', [
+            'name' => 'OrderStats',
+            'data' => 'test-data',
+            'value' => -1,
+            'type' => StatsEvent::TYPE_CHANGE,
+        ]);
+    }
+
+    /** @test */
     public function it_can_create_events_for_setting_fixed_values()
     {
         $stats = new OrderStats();
@@ -100,6 +130,21 @@ class BaseStatsTest extends TestCase
             'value' => 1337,
             'type' => StatsEvent::TYPE_SET,
             'created_at' => now()->subWeek(),
+        ]);
+    }
+
+    /** @test */
+    public function it_can_create_events_for_setting_fixed_values_with_extra_data()
+    {
+        $stats = new OrderStats();
+
+        $stats->set(1337, null, 'test-data');
+
+        $this->assertDatabaseHas('stats_events', [
+            'name' => 'OrderStats',
+            'data' => 'test-data',
+            'value' => 1337,
+            'type' => StatsEvent::TYPE_SET,
         ]);
     }
 
