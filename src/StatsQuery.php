@@ -19,6 +19,8 @@ class StatsQuery
 
     protected DateTimeInterface $end;
 
+    protected ?string $havingData = null;
+
     public function __construct(string $statistic)
     {
         $this->statistic = new $statistic();
@@ -28,6 +30,8 @@ class StatsQuery
         $this->start = now()->subMonth();
 
         $this->end = now();
+
+        $this->havingData = null;
     }
 
     public static function for(string $statistic): self
@@ -87,6 +91,13 @@ class StatsQuery
     public function end(DateTimeInterface $end): self
     {
         $this->end = $end;
+
+        return $this;
+    }
+
+    public function havingData(string $data): self
+    {
+        $this->havingData = $data;
 
         return $this;
     }
@@ -203,8 +214,14 @@ class StatsQuery
 
     protected function queryStats(): Builder
     {
-        return StatsEvent::query()
+        $result = StatsEvent::query()
             ->where('name', $this->statistic->getName());
+
+        if ($this->havingData !== null) {
+            $result = $result->where('data', $this->havingData);
+        }
+
+        return $result;
     }
 
     protected function getDifferencesPerPeriod(): EloquentCollection
