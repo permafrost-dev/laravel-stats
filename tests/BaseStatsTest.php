@@ -3,6 +3,7 @@
 namespace Spatie\Stats\Tests;
 
 use Carbon\Carbon;
+use Spatie\Stats\Models\StatsEvent;
 use Spatie\Stats\StatsQuery;
 use Spatie\Stats\Tests\Stats\OrderStats;
 
@@ -25,7 +26,7 @@ class BaseStatsTest extends TestCase
         $this->assertDatabaseHas('stats_events', [
             'name' => 'OrderStats',
             'value' => 1,
-            'type' => 'change',
+            'type' => StatsEvent::TYPE_CHANGE,
         ]);
     }
 
@@ -39,7 +40,7 @@ class BaseStatsTest extends TestCase
         $this->assertDatabaseHas('stats_events', [
             'name' => 'OrderStats',
             'value' => 1,
-            'type' => 'change',
+            'type' => StatsEvent::TYPE_CHANGE,
             'created_at' => now()->subWeek(),
         ]);
     }
@@ -54,7 +55,7 @@ class BaseStatsTest extends TestCase
         $this->assertDatabaseHas('stats_events', [
             'name' => 'OrderStats',
             'value' => -1,
-            'type' => 'change',
+            'type' => StatsEvent::TYPE_CHANGE,
         ]);
     }
 
@@ -68,7 +69,7 @@ class BaseStatsTest extends TestCase
         $this->assertDatabaseHas('stats_events', [
             'name' => 'OrderStats',
             'value' => -1,
-            'type' => 'change',
+            'type' => StatsEvent::TYPE_CHANGE,
             'created_at' => now()->subWeek(),
         ]);
     }
@@ -83,7 +84,7 @@ class BaseStatsTest extends TestCase
         $this->assertDatabaseHas('stats_events', [
             'name' => 'OrderStats',
             'value' => 1337,
-            'type' => 'set',
+            'type' => StatsEvent::TYPE_SET,
         ]);
     }
 
@@ -97,7 +98,7 @@ class BaseStatsTest extends TestCase
         $this->assertDatabaseHas('stats_events', [
             'name' => 'OrderStats',
             'value' => 1337,
-            'type' => 'set',
+            'type' => StatsEvent::TYPE_SET,
             'created_at' => now()->subWeek(),
         ]);
     }

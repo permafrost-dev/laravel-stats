@@ -241,6 +241,49 @@ class StatsQueryTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_stats_grouped_by_minute()
+    {
+        OrderStats::set(3, now()->subMinutes(6));
+        OrderStats::decrease(1, now()->subMinutes(2));
+        OrderStats::increase(3, now()->subMinutes(1));
+
+        $stats = StatsQuery::for(OrderStats::class)
+            ->start(now()->subMinutes(3))
+            ->end(now())
+            ->groupByMinute()
+            ->get();
+
+        $expected = [
+            [
+                'value' => 3,
+                'increments' => 0,
+                'decrements' => 0,
+                'difference' => 0,
+                'start' => now()->subMinutes(3),
+                'end' => now()->subMinutes(2),
+            ],
+            [
+                'value' => 2,
+                'increments' => 0,
+                'decrements' => 1,
+                'difference' => -1,
+                'start' => now()->subMinutes(2),
+                'end' => now()->subMinutes(1),
+            ],
+            [
+                'value' => 5,
+                'increments' => 3,
+                'decrements' => 0,
+                'difference' => 3,
+                'start' => now()->subMinutes(1),
+                'end' => now(),
+            ],
+        ];
+
+        $this->assertEquals($expected, $stats->toArray());
+    }
+
+    /** @test */
     public function it_can_get_stats_based_on_youngest_sets_in_periods()
     {
         OrderStats::set(1, now()->subHours(49));

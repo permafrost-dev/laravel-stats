@@ -70,6 +70,13 @@ class StatsQuery
         return $this;
     }
 
+    public function groupByMinute(): self
+    {
+        $this->period = 'minute';
+
+        return $this;
+    }
+
     public function start(DateTimeInterface $start): self
     {
         $this->start = $start;
@@ -119,12 +126,12 @@ class StatsQuery
             $lastPeriodValue = $value;
 
             return new DataPoint(
-                start: $periodStart,
-                end: $periodEnd,
-                value: (int) $value,
-                increments: (int) ($differencesPerPeriod[$periodKey]['increments'] ?? 0),
-                decrements: (int) ($differencesPerPeriod[$periodKey]['decrements'] ?? 0),
-                difference: (int) ($differencesPerPeriod[$periodKey]['difference'] ?? 0),
+                $periodStart,
+                $periodEnd,
+                (int) $value,
+                (int) ($differencesPerPeriod[$periodKey]['increments'] ?? 0),
+                (int) ($differencesPerPeriod[$periodKey]['decrements'] ?? 0),
+                (int) ($differencesPerPeriod[$periodKey]['difference'] ?? 0)
             );
         });
     }
@@ -177,14 +184,16 @@ class StatsQuery
 
     public function getPeriodTimestampFormat(): string
     {
-        return match($this->period) {
+        $map = [
             'year' => 'Y',
             'month' => 'Y-m',
             'week' => 'oW', // see https://stackoverflow.com/questions/15562270/php-datew-vs-mysql-yearweeknow
             'day' => 'Y-m-d',
             'hour' => 'Y-m-d H',
             'minute' => 'Y-m-d H:i',
-        };
+        ];
+
+        return $map[$this->period] ?? $map['day'];
     }
 
     public function getStatistic(): BaseStats
@@ -223,8 +232,6 @@ class StatsQuery
             ->where('created_at', '<', $this->end)
             ->get();
 
-        $latestSetPerPeriod = $rankedSets->where('rn', 1);
-
-        return $latestSetPerPeriod;
+        return $rankedSets->where('rn', 1);
     }
 }
