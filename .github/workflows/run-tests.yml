@@ -47,7 +47,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache-dir-path.outputs.dir }}
-          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+          key: dependencies-php-${{ matrix.php }}-${{ matrix.dependency-version }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Install dependencies
         run: |
