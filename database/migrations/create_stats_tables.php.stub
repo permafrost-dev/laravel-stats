@@ -12,8 +12,10 @@ class CreateStatsTables extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('type');
+            $table->tinyInteger('type');
             $table->bigInteger('value');
+
+            $table->index(['name', 'type']);
 
             $table->timestamps();
         });

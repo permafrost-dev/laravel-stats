@@ -70,6 +70,13 @@ class StatsQuery
         return $this;
     }
 
+    public function groupByMinute(): self
+    {
+        $this->period = 'minute';
+
+        return $this;
+    }
+
     public function start(DateTimeInterface $start): self
     {
         $this->start = $start;
@@ -225,8 +232,6 @@ class StatsQuery
             ->where('created_at', '<', $this->end)
             ->get();
 
-        $latestSetPerPeriod = $rankedSets->where('rn', 1);
-
-        return $latestSetPerPeriod;
+        return $rankedSets->where('rn', 1);
     }
 }

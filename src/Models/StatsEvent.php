@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class StatsEvent extends Model
 {
-    const TYPE_SET = 'set';
-    const TYPE_CHANGE = 'change';
+    const TYPE_SET = 1;
+    const TYPE_CHANGE = 2;
 
     protected $casts = [
         'value' => 'integer',
