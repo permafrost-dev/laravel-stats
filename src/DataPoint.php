@@ -20,7 +20,7 @@ class DataPoint implements Arrayable
         int $value,
         int $increments,
         int $decrements,
-        int $difference,
+        int $difference
     ) {
         $this->difference = $difference;
         $this->decrements = $decrements;

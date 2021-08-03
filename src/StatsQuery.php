@@ -124,7 +124,7 @@ class StatsQuery
                 (int) $value,
                 (int) ($differencesPerPeriod[$periodKey]['increments'] ?? 0),
                 (int) ($differencesPerPeriod[$periodKey]['decrements'] ?? 0),
-                (int) ($differencesPerPeriod[$periodKey]['difference'] ?? 0),
+                (int) ($differencesPerPeriod[$periodKey]['difference'] ?? 0)
             );
         });
     }
