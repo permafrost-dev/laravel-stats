@@ -12,6 +12,11 @@ abstract class BaseStats
         return class_basename($this);
     }
 
+    public function getData(): ?string
+    {
+        return null;
+    }
+
     public static function query(): StatsQuery
     {
         return new StatsQuery(static::class);
@@ -46,7 +51,7 @@ abstract class BaseStats
     {
         return StatsEvent::create([
             'name' => $this->getName(),
-            'data' => $data,
+            'data' => $data ?? $this->getData(),
             'type' => $type,
             'value' => $value,
             'created_at' => $timestamp ?? now(),
