@@ -115,14 +115,15 @@ class StatsQuery
 
         $differencesPerPeriod = $this->getDifferencesPerPeriod();
 
-        $latestSetPerPeriod = $this->getLatestSetPerPeriod();
+        //$latestSetPerPeriod = $this->getLatestSetPerPeriod();
 
         $lastPeriodValue = $this->getValue($this->start);
 
-        return $periods->map(function (array $periodBoundaries) use ($latestSetPerPeriod, $changes, $differencesPerPeriod, &$lastPeriodValue) {
+        return $periods->map(function (array $periodBoundaries) use ($changes, $differencesPerPeriod, &$lastPeriodValue) {
             [$periodStart, $periodEnd, $periodKey] = $periodBoundaries;
 
-            $setEvent = $latestSetPerPeriod->where('period', $periodKey)->first();
+            //$setEvent = $latestSetPerPeriod->where('period', $periodKey)->first();
+            $setEvent = ['value' => 0];
 
             $startValue = $setEvent['value'] ?? $lastPeriodValue;
 
