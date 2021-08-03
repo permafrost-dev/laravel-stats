@@ -177,14 +177,16 @@ class StatsQuery
 
     public function getPeriodTimestampFormat(): string
     {
-        return match($this->period) {
+        $map = [
             'year' => 'Y',
             'month' => 'Y-m',
             'week' => 'oW', // see https://stackoverflow.com/questions/15562270/php-datew-vs-mysql-yearweeknow
             'day' => 'Y-m-d',
             'hour' => 'Y-m-d H',
             'minute' => 'Y-m-d H:i',
-        };
+        ];
+
+        return $map[$this->period] ?? $map['day'];
     }
 
     public function getStatistic(): BaseStats
